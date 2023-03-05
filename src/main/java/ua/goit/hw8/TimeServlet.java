@@ -26,6 +26,7 @@ public class TimeServlet extends HttpServlet {
         Date date = new Date();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        String nowStr = format.format(date);
 
         if (zone != null) {
             if (zone >= -12 & zone <= 12) {
@@ -37,9 +38,13 @@ public class TimeServlet extends HttpServlet {
                 resp.getWriter().close();
                 return resp;
             }
-        }
 
-        String nowStr = format.format(date);
+            if (zone > 0) {
+                nowStr = nowStr + "+" + zone;
+            } else {
+                nowStr = nowStr + zone;
+            }
+        }
 
         resp.setHeader("Content-Type", "text/html; charset=utf-8");
         resp.getWriter().write(nowStr + "<br>");
@@ -59,5 +64,4 @@ public class TimeServlet extends HttpServlet {
         }
         return result;
     }
-
 }
